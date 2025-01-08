@@ -7,7 +7,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /app
 
 # Copy the pre-built binary
-COPY main .
+COPY bin/main .
 
 # Run the binary
 ENTRYPOINT ["./main"]
