@@ -1,0 +1,77 @@
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: generic-pipeline-trigger-template
+spec:
+  params:
+    - name: gitrevision
+      description: The git revision sha
+  resourcetemplates: 
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun 
+      metadata: 
+        name: generic-build-$(tt.params.gitrevision)
+      spec:
+        taskRunSpecs:
+          - pipelineTaskName: build
+            computeResources:
+              requests:
+                cpu: 2
+        serviceAccountName: openshift-pipelines
+        pipelineRef: 
+          name: generic-build-pipeline
+        params: 
+          - name: IMAGE_TAG
+            value: $(tt.params.gitrevision)
+        podTemplate:
+          securityContext:
+            runAsUser: 1000
+            fsGroup: 65532
+            fsGroupChangePolicy: "OnRootMismatch"
+        workspaces:
+        - name: source
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: pipeline-listener
+spec:
+  triggers:
+    - name: filter-events
+      interceptors:
+        - ref:
+            name: "github"
+            kind: ClusterInterceptor
+            apiVersion: triggers.tekton.dev
+          params:
+            - name: "eventTypes"
+              value: ["push"]
+        - ref:
+            name: cel
+          params:
+          - name: "overlays"
+            value:
+            - key: truncated_sha
+              expression: "body.after.truncate(7)"
+      bindings:
+        - name: gitrevision
+          value: $(extensions.truncated_sha)
+      template:
+        ref: generic-pipeline-trigger-template
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: gitlab-binding
+spec:
+  params:
+    - name: gitrevision
+      value: "$(body.after)"

@@ -1,0 +1,62 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: generic-build-pipeline
+spec:
+  params:
+    - name: IMAGE_TAG
+  workspaces:
+    - name: source
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: "https://github.com/poc-examples/golang-alpine.git"
+        - name: revision
+          value: main
+        - name: sslVerify
+          value: 'false'
+        - name: noProxy
+          value: 'true'
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+      - name: output
+        workspace: source
+
+    - name: compile
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: Task
+        name: compile
+      workspaces:
+        - name: source
+          workspace: source
+
+    - name: build
+      params:
+        - name: IMAGE
+          value: 'quay.io/rh_ee_cengleby/test:$(params.IMAGE_TAG)'
+        - name: STORAGE_DRIVER
+          value: vfs
+        - name: DOCKERFILE
+          value: ./Dockerfile
+        - name: CONTEXT
+          value: .
+        - name: BUILD_EXTRA_ARGS
+          value: "--layers=true"
+        - name: TLSVERIFY
+          value: 'true'
+        - name: FORMAT
+          value: oci
+      runAfter:
+        - compile
+      taskRef:
+        kind: Task
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: source
+
