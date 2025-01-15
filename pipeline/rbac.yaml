@@ -50,4 +50,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: openshift-pipelines
-  namespace: dcd-drd-dev
+  namespace: tekton-test
