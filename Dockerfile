@@ -11,3 +11,5 @@ COPY bin/main .
 
 # Run the binary
 ENTRYPOINT ["./main"]
+
+# PUSH TEST 001
