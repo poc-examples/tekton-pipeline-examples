@@ -5,6 +5,7 @@ metadata:
 spec:
   params:
     - name: IMAGE_TAG
+      type: string
   workspaces:
     - name: source
   tasks:
