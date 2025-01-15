@@ -63,6 +63,7 @@ spec:
               expression: "body.after.truncate(7)"
       bindings:
         - name: gitrevision
+          kind: TriggerBinding
           value: $(extensions.truncated_sha)
       template:
         ref: generic-pipeline-trigger-template
