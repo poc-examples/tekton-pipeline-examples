@@ -24,6 +24,7 @@ spec:
   steps:
 
     - name: compile
+      resources: {}
       image: golang:1.20
       workingDir: $(workspaces.source.path)
       script: |
