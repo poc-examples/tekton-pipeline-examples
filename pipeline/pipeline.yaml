@@ -12,7 +12,7 @@ spec:
     - name: git-clone
       params:
         - name: url
-          value: "https://github.com/poc-examples/golang-alpine.git"
+          value: "https://github.com/poc-examples/tekton-pipeline-examples.git"
         - name: revision
           value: main
         - name: sslVerify
@@ -39,7 +39,7 @@ spec:
     - name: build
       params:
         - name: IMAGE
-          value: 'quay.io/rh_ee_cengleby/test:$(params.IMAGE_TAG)'
+          value: 'quay-quay-quay-registry.apps.quay-demo-1.xo1n.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)'
         - name: STORAGE_DRIVER
           value: vfs
         - name: DOCKERFILE
