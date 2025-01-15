@@ -121,6 +121,7 @@ spec:
       type: string
   steps:
     - name: clone
+      resources: {}
       image: "$(params.gitInitImage)"
       env:
       - name: HOME
