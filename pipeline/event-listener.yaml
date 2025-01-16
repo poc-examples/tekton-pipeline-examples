@@ -30,14 +30,17 @@ spec:
             fsGroup: 65532
             fsGroupChangePolicy: "OnRootMismatch"
         workspaces:
-        - name: source
-          volumeClaimTemplate:
-            spec:
-              accessModes:
-                - ReadWriteOnce
-              resources:
-                requests:
-                  storage: 1Gi
+          - name: source
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+          - name: acs-token
+            secret:
+              secretName: acs-token
 ---
 apiVersion: triggers.tekton.dev/v1beta1
 kind: EventListener

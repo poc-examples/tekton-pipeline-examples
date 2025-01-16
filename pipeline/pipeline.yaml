@@ -8,6 +8,7 @@ spec:
       type: string
   workspaces:
     - name: source
+    - name: acs-token
   tasks:
     - name: git-clone
       params:
@@ -60,4 +61,28 @@ spec:
       workspaces:
         - name: source
           workspace: source
+
+
+    - name: scan
+      params:
+        - name: rox_central_endpoint
+          value: central-rhacs-operator.apps.quay-demo-1.xo1n.p1.openshiftapps.com:443 # CHANGE TO ROUTE TO MATCH CLIENT
+        - name: rox_image
+          value: quay.io/stackrox-io/roxctl:4.4.2 # OPTIONAL
+        - name: image # REQUIRED
+          value: "quay-quay-quay-registry.apps.quay-demo-1.xo1n.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)"
+        - name: output_format
+          value: json # OPTIONAL
+        - name: insecure-skip-tls-verify
+          value: "false" # OPTIONAL
+        - name: rox_token_file 
+          value: "/rox-api-token-auth/rox_api_token"
+      runAfter:
+        - build
+      taskRef:
+        kind: Task
+        name: rhacs-image-scan
+      workspaces:
+        - name: rox-api-token-auth
+          workspace: acs-token
 
