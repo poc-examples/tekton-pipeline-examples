@@ -74,7 +74,7 @@ spec:
         - name: output_format
           value: json # OPTIONAL
         - name: insecure-skip-tls-verify
-          value: "false" # OPTIONAL
+          value: "true" # OPTIONAL
         - name: rox_token_file 
           value: "/rox-api-token-auth/rox_api_token"
       runAfter:
