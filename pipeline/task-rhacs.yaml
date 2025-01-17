@@ -89,6 +89,8 @@ spec:
       optional: true
       readOnly: true
       mountPath: /rox-api-token-auth
+    - name: source
+      mountPath: /source
   steps:
     - name: rox-image-scan
       image: $(params.rox_image)
