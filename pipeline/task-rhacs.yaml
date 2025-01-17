@@ -121,6 +121,5 @@ spec:
         - --insecure-skip-tls-verify=$(INSECURE)
         - --output=$(OUTPUT)
         - --image=$(IMAGE)
-      script: |
-        #!/bin/bash
-        cat /source/scan-output.json
+        - ">"
+        - "/source/$(ROX_OUTPUT_FILE)"
