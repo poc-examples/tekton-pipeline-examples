@@ -116,10 +116,11 @@ spec:
         - name: ROX_ERROR_FILE
           value: $(params.error_file)
       args:
-        - image
-        - scan
-        - --insecure-skip-tls-verify=$(INSECURE)
-        - --output=$(OUTPUT)
-        - --image=$(IMAGE)
-        - --output-file=$(ROX_OUTPUT_FILE)
+        - version
+      script: |
+        #!/bin/bash
+        roxctl image scan \
+          --insecure-skip-tls-verify=$(INSECURE)
+          --output=$(OUTPUT)
+          --image=$(IMAGE) > $(ROX_OUTPUT_FILE)
 
