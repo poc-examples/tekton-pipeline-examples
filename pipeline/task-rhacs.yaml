@@ -121,4 +121,5 @@ spec:
         - --insecure-skip-tls-verify=$(INSECURE)
         - --output=$(OUTPUT)
         - --image=$(IMAGE)
+        - --output-file=$(ROX_OUTPUT_FILE)
 
