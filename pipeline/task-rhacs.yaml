@@ -134,6 +134,7 @@ spec:
           && chmod +x roxctl
 
         echo "roxctl verion: $(./roxctl version)"
+        echo "scan path: $(results.SCAN_OUTPUT.path)"
 
         ./roxctl image scan \
           --token-file=${ROX_API_TOKEN_FILE} \
@@ -143,5 +144,3 @@ spec:
 
         jq -rce \
           "{vulnerabilities:{critical: (.result.summary.CRITICAL), high: (.result.summary.IMPORTANT), medium: (.result.summary.MODERATE), low: (.result.summary.LOW)}}" scan_output.json | tee $(results.SCAN_OUTPUT.path)
-          
-
