@@ -134,5 +134,15 @@ spec:
           --insecure-skip-tls-verify=${INSECURE} \
           --output=${OUTPUT} \
           --image=${IMAGE} > scan_output.json
+
+        ls -la
+
+        jq -rce \
+          "{vulnerabilities:{
+          critical: (.result.summary.CRITICAL),
+          high: (.result.summary.IMPORTANT),
+          medium: (.result.summary.MODERATE),
+          low: (.result.summary.LOW)
+          }}" roxctl_output.json
           
 
