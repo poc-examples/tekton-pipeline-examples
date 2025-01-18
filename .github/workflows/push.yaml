@@ -38,4 +38,6 @@ jobs:
           echo '${{ toJson(github.event) }}' > event-payload.json
           PAYLOAD="$(jq --arg jwt "$JWT_TOKEN" '. + {jwt_token: $jwt}' event-payload.json)"
 
-          echo "$PAYLOAD"
+          curl -X POST ${WEBHOOK_URL} \
+            -H "Content-Type: application/json" \
+            -d "'"${PAYLOAD}"'"
