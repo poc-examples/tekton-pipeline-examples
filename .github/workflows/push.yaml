@@ -13,5 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Run a script
-        run: echo "Changes detected outside of .tekton or pipelines folders."
+      - name: Get Auth JWT
+        env:
+          AUTH_URL: ${{ secrets.AUTH_URL }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        run: |
+          RESPONSE=$(curl -X POST ${AUTH_URL} \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -d '{
+              "client_id": "'"${CLIENT_ID}"'",
+              "client_secret": "'"${CLIENT_SECRET}"'",
+              "grant_type": "client_credentials"
+            }')
+
+          TOKEN=$(echo "${RESPONSE}" | jq -r '.access_token')
+
+          echo "JWT Token: ${TOKEN}"
