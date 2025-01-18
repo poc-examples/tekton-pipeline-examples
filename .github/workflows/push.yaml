@@ -1,0 +1,17 @@
+name: Trigger on push
+
+on:
+  push:
+    paths-ignore:
+      - '.tekton/**'
+      - 'pipelines/**'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run a script
+        run: echo "Changes detected outside of .tekton or pipelines folders."
