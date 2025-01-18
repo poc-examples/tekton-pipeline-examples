@@ -10,6 +10,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -19,13 +20,16 @@ jobs:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         run: |
-          RESPONSE=$(curl -X POST ${AUTH_URL} \
+          echo "AUTH_URL: ${AUTH_URL}"
+          echo "CLIENT_ID: ${CLIENT_ID}"
+          echo "CLIENT_SECRET: ${CLIENT_SECRET}"
+
+          CURL_COMMAND=$(cat <<EOF
+            curl -X POST "${AUTH_URL}" \
             -H "Content-Type: application/x-www-form-urlencoded" \
-            -d '{
-              "client_id": "'"${CLIENT_ID}"'",
-              "client_secret": "'"${CLIENT_SECRET}"'",
-              "grant_type": "client_credentials"
-            }')
+            -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials"
+            EOF
+          )
 
           TOKEN=$(echo "${RESPONSE}" | jq -r '.access_token')
 
