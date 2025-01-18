@@ -117,7 +117,7 @@ spec:
         - name: ROX_ERROR_FILE
           value: $(params.error_file)
       script: |
-        wget -O roxctl https://mirror.openshift.com/pub/rhacs/assets/4.4.1/bin/Linux/roxctl
+        curl -o roxctl -L roxctl https://mirror.openshift.com/pub/rhacs/assets/4.4.1/bin/Linux/roxctl | true
         ls -la
 
 
