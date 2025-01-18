@@ -36,8 +36,7 @@ jobs:
           JWT_TOKEN: ${{ steps.get-jwt.outputs.jwt_token }}
         run: |
           echo '${{ toJson(github.event) }}' > event-payload.json
-          echo "::set-output name=event::$(\
-            jq --arg jwt "$JWT_TOKEN" '. + {jwt_token: $jwt}' event-payload.json)"
+          echo "::set-output name=event::$(jq --arg jwt "$JWT_TOKEN" '. + {jwt_token: $jwt}' event-payload.json)"
 
       - name: Trigger the Webhook
         env:
