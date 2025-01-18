@@ -21,12 +21,11 @@ jobs:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         run: |
-          RESPONSE=$(curl -X POST ${AUTH_URL} \
+          RESPONSE=$(curl -s -X POST ${AUTH_URL} \
             -H "Content-Type: application/x-www-form-urlencoded" \
             -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials")
 
           TOKEN=$(echo "${RESPONSE}" | jq -r '.access_token')
-
           echo "::set-output name=jwt_token::${TOKEN}"
 
       - name: Trigger the Payload
@@ -36,10 +35,11 @@ jobs:
           JWT_TOKEN: ${{ steps.get-jwt.outputs.jwt_token }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
         run: |
-          echo '${{ toJson(github.event) }}' > event-payload.json
-          PAYLOAD="$(jq --arg jwt "$JWT_TOKEN" '. + {jwt_token: $jwt}' event-payload.json)"
+          PAYLOAD=$(jq --null-input \
+            --argjson event "$(jq -c '.' <<< '${{ toJson(github.event) }}')" \
+            --arg jwt "$JWT_TOKEN" '$event + {jwt_token: $jwt}')
 
-          curl -X POST ${WEBHOOK_URL} \
+          curl -s -X POST ${WEBHOOK_URL} \
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: push" \
             -d "$PAYLOAD"
