@@ -38,8 +38,8 @@ jobs:
           {
             PAYLOAD=$(jq --null-input \
               --argjson event "$(jq -c '.' <<< '${{ toJson(github.event) }}')" \
-              --arg jwt "$JWT_TOKEN" '$event + {jwt_token: $jwt}' 2>/dev/null)
-          }
+              --arg jwt "$JWT_TOKEN" '$event + {jwt_token: $jwt}')
+          } 2>/dev/null
 
           curl -s -X POST ${WEBHOOK_URL} \
             -H "Content-Type: application/json" \
