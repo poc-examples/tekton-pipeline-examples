@@ -118,7 +118,7 @@ spec:
           value: $(params.error_file)
       securityContext:
         privileged: true
-        runAsUser: root
+        runAsUser: 0
       script: |
         #!/bin/bash
 
