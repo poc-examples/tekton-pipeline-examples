@@ -144,6 +144,8 @@ spec:
         jq -rce \
           "{vulnerabilities:{critical: (.result.summary.CRITICAL), high: (.result.summary.IMPORTANT), medium: (.result.summary.MODERATE), low: (.result.summary.LOW)}}" scan_output.json > $(results.SCAN_OUTPUT.path) 
 
+        cat scan_output.json
+
         # Check for fixable critical vulnerabilities
         fixable_criticals=$(jq '.result.fixable.CRITICAL // 0' scan_output.json)
 
