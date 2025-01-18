@@ -119,6 +119,8 @@ spec:
       securityContext:
         privileged: true
       script: |
+        dnf install -y jq
+        
         curl -L -f -o roxctl https://mirror.openshift.com/pub/rhacs/assets/4.4.1/bin/Linux/roxctl \
           && chmod +x roxctl
 
@@ -128,4 +130,12 @@ spec:
           --token-file=${ROX_API_TOKEN_FILE} \
           --insecure-skip-tls-verify=${INSECURE} \
           --output=${OUTPUT} \
-          --image=${IMAGE}
+          --image=${IMAGE} > scan_output.json
+          
+        jq -rce \
+          '{vulnerabilities:{
+            critical: (.result.summary.CRITICAL),
+            high: (.result.summary.IMPORTANT),
+            medium: (.result.summary.MODERATE),
+            low: (.result.summary.LOW)
+            }}' scan_output.json | tee $(results.SCAN_OUTPUT.path)
