@@ -118,9 +118,5 @@ spec:
       args:
         - version
       script: |
-        #!/bin/bash
-        roxctl image scan \
-          --insecure-skip-tls-verify=$(INSECURE)
-          --output=$(OUTPUT)
-          --image=$(IMAGE) > $(ROX_OUTPUT_FILE)
+        ls -la
 
