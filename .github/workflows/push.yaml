@@ -15,19 +15,23 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Get Auth JWT
+        id: get-jwt
         env:
           AUTH_URL: ${{ secrets.AUTH_URL }}
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         run: |
-          echo "AUTH_URL: ${AUTH_URL}"
-          echo "CLIENT_ID: ${CLIENT_ID}"
-          echo "CLIENT_SECRET: ${CLIENT_SECRET}"
-
           RESPONSE=$(curl -X POST ${AUTH_URL} \
             -H "Content-Type: application/x-www-form-urlencoded" \
             -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials")
 
           TOKEN=$(echo "${RESPONSE}" | jq -r '.access_token')
 
-          echo "JWT Token: ${TOKEN}"
+          echo "::set-output name=jwt_token::${TOKEN}"
+
+      - name: Trigger Tekton Job
+        env:
+          TEKTON_API_URL: ${{ secrets.TEKTON_API_URL }}
+          JWT_TOKEN: ${{ steps.get-jwt.outputs.jwt_token }}
+        run: |
+          echo "Branch: ${{ github.event }}"
