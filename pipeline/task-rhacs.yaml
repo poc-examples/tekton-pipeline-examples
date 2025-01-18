@@ -147,6 +147,7 @@ spec:
         cat scan_output.json
 
         # Check for fixable critical vulnerabilities
-        fixable_criticals=$(jq '.result.fixable.CRITICAL // 0' scan_output.json)
+        fixable_criticals=$(jq '[.result.vulnerabilities[] | select(.cveSeverity == "CRITICAL" and .componentFixedVersion != null and .componentFixedVersion != "")] | length' scan_output.json)
+        # fixable_criticals=$(jq '.result.fixable.CRITICAL // 0' scan_output.json)
 
         echo $fixable_criticals
