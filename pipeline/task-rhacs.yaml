@@ -138,11 +138,6 @@ spec:
         ls -la
 
         jq -rce \
-          "{vulnerabilities:{
-          critical: (.result.summary.CRITICAL),
-          high: (.result.summary.IMPORTANT),
-          medium: (.result.summary.MODERATE),
-          low: (.result.summary.LOW)
-          }}" roxctl_output.json
+          "{vulnerabilities:{critical: (.result.summary.CRITICAL), high: (.result.summary.IMPORTANT), medium: (.result.summary.MODERATE), low: (.result.summary.LOW)}}" scan_output.json
           
 
