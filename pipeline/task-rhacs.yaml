@@ -119,10 +119,10 @@ spec:
       securityContext:
         privileged: true
       script: |
+        #!/bin/bash
+        
         curl -L -f -o roxctl https://mirror.openshift.com/pub/rhacs/assets/4.4.1/bin/Linux/roxctl \
           && chmod +x roxctl
-
-        dnf install -y jq
 
         echo "roxctl verion: $(./roxctl version)"
 
