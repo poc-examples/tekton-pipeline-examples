@@ -66,8 +66,8 @@ spec:
       params:
         - name: rox_central_endpoint
           value: central-rhacs-operator.apps.quay-demo-1.xo1n.p1.openshiftapps.com:443 # CHANGE TO ROUTE TO MATCH CLIENT
-        - name: rox_image
-          value: quay.io/stackrox-io/roxctl:4.4.2 # OPTIONAL
+        # - name: rox_image
+        #   value: quay.io/stackrox-io/roxctl:4.4.2 # OPTIONAL
         - name: image # REQUIRED
           value: "quay-quay-quay-registry.apps.quay-demo-1.xo1n.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)"
         - name: output_format
