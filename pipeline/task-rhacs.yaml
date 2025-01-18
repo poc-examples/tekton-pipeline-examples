@@ -119,10 +119,11 @@ spec:
       securityContext:
         privileged: true
       script: |
-        curl -L -f -o roxctl https://mirror.openshift.com/pub/rhacs/assets/4.4.1/bin/Linux/roxctl
-        ls -la
-        chmod +x roxctl
-        ls -la
+        curl -L -f -o roxctl https://mirror.openshift.com/pub/rhacs/assets/4.4.1/bin/Linux/roxctl \
+          && xattr -c roxctl \
+          && chmod +x roxctl
+
+        echo "roxctl verion: $(./roxctl version)"
 
         ./roxctl image scan \
           --insecure-skip-tls-verify=${INSECURE} \
