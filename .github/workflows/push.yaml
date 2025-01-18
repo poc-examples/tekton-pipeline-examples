@@ -34,4 +34,5 @@ jobs:
           TEKTON_API_URL: ${{ secrets.TEKTON_API_URL }}
           JWT_TOKEN: ${{ steps.get-jwt.outputs.jwt_token }}
         run: |
-          echo "Branch: ${{ github.event }}"
+          echo '${{ toJson(github.event) }}' > event-payload.json
+          cat event-payload.json
