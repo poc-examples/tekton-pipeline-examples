@@ -120,7 +120,7 @@ spec:
         privileged: true
       script: |
         #!/bin/bash
-        
+
         curl -L -f -o roxctl https://mirror.openshift.com/pub/rhacs/assets/4.4.1/bin/Linux/roxctl \
           && chmod +x roxctl
 
@@ -132,10 +132,10 @@ spec:
           --output=${OUTPUT} \
           --image=${IMAGE} > scan_output.json
           
-        jq -rce \
-          '{vulnerabilities:{
-            critical: (.result.summary.CRITICAL),
-            high: (.result.summary.IMPORTANT),
-            medium: (.result.summary.MODERATE),
-            low: (.result.summary.LOW)
-            }}' scan_output.json | tee $(results.SCAN_OUTPUT.path)
+        # jq -rce \
+        #   '{vulnerabilities:{
+        #     critical: (.result.summary.CRITICAL),
+        #     high: (.result.summary.IMPORTANT),
+        #     medium: (.result.summary.MODERATE),
+        #     low: (.result.summary.LOW)
+        #     }}' scan_output.json | tee $(results.SCAN_OUTPUT.path)
