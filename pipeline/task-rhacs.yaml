@@ -25,7 +25,7 @@ spec:
       default: central.stackrox.svc:443
     - name: rox_image
       description: Image providing the roxctl tool.
-      default: quay.io/stackrox-io/roxctl:4.4.2
+      default: registry.access.redhat.com/ubi9/ubi:latest
     - name: image
       type: string
       description: |
@@ -115,8 +115,6 @@ spec:
           value: $(params.output_file)
         - name: ROX_ERROR_FILE
           value: $(params.error_file)
-      args:
-        - version
       script: |
         ls -la
 
