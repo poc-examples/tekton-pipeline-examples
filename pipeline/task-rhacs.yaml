@@ -125,6 +125,7 @@ spec:
         echo "roxctl verion: $(./roxctl version)"
 
         ./roxctl image scan \
+          --token-file=${ROX_API_TOKEN_FILE} \
           --insecure-skip-tls-verify=${INSECURE} \
           --output=${OUTPUT} \
           --image=${IMAGE}
