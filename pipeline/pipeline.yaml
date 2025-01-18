@@ -9,6 +9,10 @@ spec:
   workspaces:
     - name: source
     - name: acs-token
+  results:
+    - description: The common vulnerabilities and exposures (CVE) result
+      name: SCAN_OUTPUT
+      value: $(tasks.scan.results.SCAN_OUTPUT)
   tasks:
     - name: git-clone
       params:
