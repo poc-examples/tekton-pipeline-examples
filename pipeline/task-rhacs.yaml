@@ -11,7 +11,13 @@ metadata:
     tekton.dev/displayName: "Scan an image for vulnerabilities with Red Hat Advanced Cluster Security"
     tekton.dev/platforms: "linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,darwin/amd64,darwin/arm64,windows/amd64"
     tekton.dev/pipelines.minVersion: "0.50.0"
+    task.output.location: results
+    task.results.format: application/json
+    task.results.key: SCAN_OUTPUT
 spec:
+  results:
+    - description: CVE result format
+      name: SCAN_OUTPUT
   description: >-
     Scan an image with Red Hat Advanced Cluster Security.
 
@@ -135,9 +141,7 @@ spec:
           --output=${OUTPUT} \
           --image=${IMAGE} > scan_output.json
 
-        ls -la
-
         jq -rce \
-          "{vulnerabilities:{critical: (.result.summary.CRITICAL), high: (.result.summary.IMPORTANT), medium: (.result.summary.MODERATE), low: (.result.summary.LOW)}}" scan_output.json
+          "{vulnerabilities:{critical: (.result.summary.CRITICAL), high: (.result.summary.IMPORTANT), medium: (.result.summary.MODERATE), low: (.result.summary.LOW)}}" scan_output.json | tee $(results.SCAN_OUTPUT.path)
           
 

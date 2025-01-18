@@ -88,15 +88,3 @@ spec:
           workspace: acs-token
         - name: source
           workspace: source
-
-    - name: check-scan
-      runAfter:
-        - scan
-      taskRef:
-        kind: Task
-        name: check-scan
-      workspaces:
-        - name: source
-          workspace: source
-
-
