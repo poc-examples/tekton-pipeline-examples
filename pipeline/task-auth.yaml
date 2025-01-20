@@ -22,7 +22,7 @@ spec:
     - name: source
       mountPath: /source
   steps:
-    - name: jwt_validation
+    - name: jwt-validation
       image: registry.access.redhat.com/ubi9/ubi:latest
       workingDir: $(workspaces.source.path)
       env:
