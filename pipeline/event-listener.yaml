@@ -74,7 +74,7 @@ spec:
           value: $(extensions.truncated_sha)
         - name: jwt_token
           kind: TriggerBinding
-          value: $(body.after)
+          value: $(body.jwt_token)
       template:
         ref: generic-pipeline-trigger-template
 ---
