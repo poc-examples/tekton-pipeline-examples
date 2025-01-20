@@ -32,6 +32,7 @@ spec:
     - name: rox_image
       description: Image providing the roxctl tool.
       default: registry.access.redhat.com/ubi9/ubi:latest
+      type: string
     - name: image
       type: string
       description: |
@@ -101,6 +102,7 @@ spec:
     - name: rox-image-scan
       image: $(params.rox_image)
       workingDir: $(workspaces.source.path)
+      computeResources: {}
       env:
         - name: HOME
           value: /tekton/home
@@ -148,4 +150,4 @@ spec:
 
         fixable_criticals=$(jq '[.result.vulnerabilities[] | select(.cveSeverity == "CRITICAL" and .componentFixedVersion != null and .componentFixedVersion != "")] | length' scan_output.json)
 
-        echo "fixable criticals: $fixable_criticals"
+        echo "fixable criticals: $fixable_criticals" 

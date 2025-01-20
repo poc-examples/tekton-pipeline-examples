@@ -20,6 +20,7 @@ spec:
       default: ""
   steps:
     - name: jwt-validation
+      computeResources: {}
       image: registry.access.redhat.com/ubi9/ubi:latest
       env:
         - name: HOME
