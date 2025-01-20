@@ -40,6 +40,6 @@ jobs:
             -H "X-GitHub-Event: push" \
             -d '{
               "after": "${{ github.event.after }}",
-              "jwt_token": "41119"
+              "jwt_token": "'"$JWT_TOKEN"'"
             }'
       
