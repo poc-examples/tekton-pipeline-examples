@@ -57,7 +57,7 @@ spec:
     - name: build
       params:
         - name: IMAGE
-          value: 'openshift-gitops-server-openshift-gitops.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)'
+          value: 'quay-quay-quay-registry.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)'
         - name: STORAGE_DRIVER
           value: vfs
         - name: DOCKERFILE
@@ -84,7 +84,7 @@ spec:
         - name: rox_central_endpoint
           value: central-rhacs-operator.apps.quay-demo-2.ot31.p1.openshiftapps.com:443 # CHANGE TO ROUTE TO MATCH CLIENT
         - name: image # REQUIRED
-          value: "openshift-gitops-server-openshift-gitops.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)"
+          value: "quay-quay-quay-registry.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)"
         - name: output_format
           value: json # OPTIONAL
         - name: insecure-skip-tls-verify
