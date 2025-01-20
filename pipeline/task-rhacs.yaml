@@ -18,6 +18,7 @@ spec:
   results:
     - description: CVE result format
       name: SCAN_OUTPUT
+      type: string
   description: >-
     Scan an image with Red Hat Advanced Cluster Security.
 
