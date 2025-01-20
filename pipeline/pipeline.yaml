@@ -57,7 +57,7 @@ spec:
     - name: build
       params:
         - name: IMAGE
-          value: 'quay-quay-quay-registry.apps.quay-demo-1.xo1n.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)'
+          value: 'openshift-gitops-server-openshift-gitops.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)'
         - name: STORAGE_DRIVER
           value: vfs
         - name: DOCKERFILE
