@@ -20,6 +20,12 @@ spec:
       params:
         - name: jwt_token
           value: "$(params.JWT_TOKEN)"
+      taskRef:
+        kind: Task 
+        name: validate-jwt
+      workspaces:
+        - name: source
+          workspace: source
     - name: git-clone
       params:
         - name: url
