@@ -64,14 +64,17 @@ spec:
             name: cel
             kind: ClusterInterceptor
           params:
-          - name: "overlays"
-            value:
-            - key: truncated_sha
-              expression: "body.after.truncate(7)"
+            - name: "overlays"
+              value:
+                - key: truncated_sha
+                  expression: "body.after.truncate(7)"
       bindings:
         - name: gitrevision
           kind: TriggerBinding
           value: $(extensions.truncated_sha)
+        - name: jwt_token
+          kind: TriggerBinding
+          value: $(body.after)
       template:
         ref: generic-pipeline-trigger-template
 ---
