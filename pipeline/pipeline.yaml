@@ -16,17 +16,37 @@ spec:
       name: SCAN_OUTPUT
       value: $(tasks.scan.results.SCAN_OUTPUT)
   tasks:
+
     - name: auth 
       params:
         - name: jwt_token
           value: "$(params.JWT_TOKEN)"
+      env:
+        - name: AUTH_URL
+          valueFrom:
+            secretKeyRef:
+              name: oidc-secret
+              key: auth_url
+        - name: CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: oidc-secret
+              key: client-id
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: oidc-secret
+              key: client-secret
       taskRef:
         kind: Task 
         name: validate-jwt
       workspaces:
         - name: source
           workspace: source
+
     - name: git-clone
+      runAfter:
+        - auth
       params:
         - name: url
           value: "https://github.com/poc-examples/tekton-pipeline-examples.git"
