@@ -44,9 +44,6 @@ spec:
           - name: acs-token
             secret:
               secretName: acs-token
-          - name: acs-token
-            secret:
-              secretName: acs-token
 ---
 apiVersion: triggers.tekton.dev/v1beta1
 kind: EventListener

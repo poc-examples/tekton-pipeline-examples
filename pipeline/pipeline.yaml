@@ -24,9 +24,6 @@ spec:
       taskRef:
         kind: Task 
         name: validate-jwt
-      workspaces:
-        - name: source
-          workspace: source
 
     - name: git-clone
       runAfter:

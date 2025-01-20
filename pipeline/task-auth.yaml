@@ -18,13 +18,9 @@ spec:
     - name: jwt_token
       type: string
       default: ""
-  workspaces:
-    - name: source
-      mountPath: /source
   steps:
     - name: jwt-validation
       image: registry.access.redhat.com/ubi9/ubi:latest
-      workingDir: $(workspaces.source.path)
       env:
         - name: HOME
           value: /tekton/home
