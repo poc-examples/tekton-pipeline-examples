@@ -1,0 +1,36 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: validate-jwt
+  labels:
+    app.kubernetes.io/version: "4.0"
+  annotations:
+    tekton.dev/tags: security
+    tekton.dev/categories: Security
+    tekton.dev/displayName: "Scan an image for vulnerabilities with Red Hat Advanced Cluster Security"
+    tekton.dev/platforms: "linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,darwin/amd64,darwin/arm64,windows/amd64"
+    tekton.dev/pipelines.minVersion: "0.50.0"
+spec:
+  description: >-
+    Needs Description
+  params:
+    - name: jwt_token
+      type: string
+      default: ""
+  workspaces:
+    - name: source
+      mountPath: /source
+  steps:
+    - name: jwt_validation
+      image: registry.access.redhat.com/ubi9/ubi:latest
+      workingDir: $(workspaces.source.path)
+      env:
+        - name: HOME
+          value: /tekton/home
+        - name: JWT_TOKEN
+          value: $(params.jwt_token)
+      script: |
+        #!/bin/bash
+
+        echo "${JWT_TOKEN}"

@@ -7,6 +7,7 @@ spec:
   params:
     - name: gitrevision
       description: The git revision sha
+    - name: jwt_token
   resourcetemplates: 
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun 
@@ -24,6 +25,8 @@ spec:
         params: 
           - name: IMAGE_TAG
             value: $(tt.params.gitrevision)
+          - name: JWT_TOKEN
+            value: $(tt.params.jwt_token)
         podTemplate:
           securityContext:
             runAsUser: 1000
@@ -80,3 +83,5 @@ spec:
   params:
     - name: gitrevision
       value: "$(body.after)"
+    - name: jwt_token 
+      value: "$(body.jwt_token)"

@@ -6,6 +6,8 @@ spec:
   params:
     - name: IMAGE_TAG
       type: string
+    - name: JWT_TOKEN
+      type: string
   workspaces:
     - name: source
     - name: acs-token
@@ -14,6 +16,10 @@ spec:
       name: SCAN_OUTPUT
       value: $(tasks.scan.results.SCAN_OUTPUT)
   tasks:
+    - name: auth 
+      params:
+        - name: jwt_token
+          value: "$(params.JWT_TOKEN)"
     - name: git-clone
       params:
         - name: url
