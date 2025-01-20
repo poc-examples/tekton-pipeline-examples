@@ -21,22 +21,6 @@ spec:
       params:
         - name: jwt_token
           value: "$(params.JWT_TOKEN)"
-      env:
-        - name: AUTH_URL
-          valueFrom:
-            secretKeyRef:
-              name: oidc-secret
-              key: auth_url
-        - name: CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: oidc-secret
-              key: client-id
-        - name: CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: oidc-secret
-              key: client-secret
       taskRef:
         kind: Task 
         name: validate-jwt

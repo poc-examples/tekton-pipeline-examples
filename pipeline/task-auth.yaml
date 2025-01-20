@@ -30,6 +30,21 @@ spec:
           value: /tekton/home
         - name: JWT_TOKEN
           value: $(params.jwt_token)
+        - name: AUTH_URL
+          valueFrom:
+            secretKeyRef:
+              name: oidc-secret
+              key: auth_url
+        - name: CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: oidc-secret
+              key: client-id
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: oidc-secret
+              key: client-secret
       script: |
         #!/usr/bin/env python3
 
