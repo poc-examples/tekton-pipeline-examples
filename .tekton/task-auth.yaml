@@ -54,7 +54,7 @@ spec:
             print("JWT token is missing.")
             exit(1)
 
-        printf(jwt_token)
+        print(jwt_token)
 
         auth_url = os.getenv("AUTH_URL")
         client_id = os.getenv("CLIENT_ID")
