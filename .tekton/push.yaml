@@ -28,8 +28,8 @@ spec:
       value: "{{repo_url}}"
     - name: revision
       value: "{{revision}}"
-    - name: jwt_token
-      value: "{{ body.commits.message }}"
+    # - name: jwt_token
+    #   value: "{{ body.commits.message }}"
     - name: image_tag 
       value: "{{ image_tag }}"
     - name: image_base
@@ -43,17 +43,17 @@ spec:
       - name: revision
     tasks:
 
-      - name: auth 
-        params:
-          - name: jwt_token
-            value: "$(params.jwt_token)"
-        taskRef:
-          kind: Task 
-          name: validate-jwt
+      # - name: auth 
+      #   params:
+      #     - name: jwt_token
+      #       value: "$(params.jwt_token)"
+      #   taskRef:
+      #     kind: Task 
+      #     name: validate-jwt
 
       - name: git-clone
-        runAfter:
-          - auth
+        # runAfter:
+        #   - auth
         taskRef:
           kind: Task
           name: git-clone
