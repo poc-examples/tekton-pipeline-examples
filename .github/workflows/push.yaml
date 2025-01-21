@@ -38,8 +38,5 @@ jobs:
           curl -s -X POST ${WEBHOOK_URL} \
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: push" \
-            -d '{
-              "after": "${{ github.event.after }}",
-              "jwt_token": "'"$JWT_TOKEN"'"
-            }'
+            -d '${{ toJSON(github.event) }}'
  
