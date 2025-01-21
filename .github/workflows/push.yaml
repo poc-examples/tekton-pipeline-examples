@@ -18,7 +18,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo $TOKEN
+          curl -X GET -H "Authorization: Bearer $TOKEN" https://api.github.com/repos/${{ github.repository }}
 
       - name: Get Auth JWT
         id: get-jwt
