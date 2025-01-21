@@ -26,7 +26,7 @@ jobs:
         run: |
           curl -X POST https://oauth-openshift.apps.quay-demo-2.ot31.p1.openshiftapps.com/oauth/token \
             -H "Authorization: Bearer $TOKEN" \
-            -d '{"grant_type":"client_credentials","client_id":"Ov23ligI7Qs9mfLN9wVu"}'
+            -d '{"grant_type":"device_code","client_id":"Ov23ligI7Qs9mfLN9wVu"}'
 
       - name: Get Auth JWT
         id: get-jwt
