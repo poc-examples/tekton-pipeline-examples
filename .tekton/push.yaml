@@ -21,9 +21,9 @@ spec:
     - name: acs-token
       secret:
         secretName: acs-token
-    - name: basic-auth
-      secret:
-        secretName: "{{ git_auth_secret }}"
+    # - name: basic-auth
+    #   secret:
+    #     secretName: "{{ git_auth_secret }}"
   params:
     - name: repo_url
       value: "{{repo_url}}"
@@ -38,7 +38,7 @@ spec:
   pipelineSpec:
     workspaces:
       - name: source
-      - name: basic-auth
+      # - name: basic-auth
     params:
       - name: repo_url
       - name: revision
@@ -70,8 +70,8 @@ spec:
         workspaces:
           - name: output
             workspace: source
-          - name: basic-auth
-            workspace: basic-auth
+          # - name: basic-auth
+          #   workspace: basic-auth
 
       - name: compile
         runAfter:
