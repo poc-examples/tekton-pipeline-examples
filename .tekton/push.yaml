@@ -32,7 +32,7 @@ spec:
     # - name: jwt_token
     #   value: "{{ body.commits.message }}"
     - name: image_tag 
-      value: "{{ image_tag }}"
+      value: "{{ revision }}"
     - name: image_base
       value: "quay-quay-quay-registry.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang"
   pipelineSpec:
