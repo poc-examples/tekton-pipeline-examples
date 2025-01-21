@@ -42,3 +42,4 @@ jobs:
               "after": "${{ github.event.after }}",
               "jwt_token": "'"$JWT_TOKEN"'"
             }'
+ 
