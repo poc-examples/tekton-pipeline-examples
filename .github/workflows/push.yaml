@@ -28,7 +28,7 @@ jobs:
         env:
           OIDC_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl -X POST https://oauth-openshift.apps.quay-demo-2.ot31.p1.openshiftapps.com/oauth/token/request \
+          curl -v -X POST https://oauth-openshift.apps.quay-demo-2.ot31.p1.openshiftapps.com/oauth/token/request \
             -H "Content-Type: application/x-www-form-urlencoded" \
             -d "grant_type=authorization_code&code=$OIDC_TOKEN&client_id=Ov23ligI7Qs9mfLN9wVu&client_secret=40abf6bf33869ab319f768549aa2f5c74df50ef4"
 
