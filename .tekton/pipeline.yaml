@@ -3,14 +3,14 @@ kind: Pipeline
 metadata:
   name: generic-build-pipeline
 spec:
-  params:
-    - name: IMAGE_TAG
-      type: string
-    - name: JWT_TOKEN
-      type: string
-  workspaces:
-    - name: source
-    - name: acs-token
+  # params:
+  #   - name: IMAGE_TAG
+  #     type: string
+  #   - name: JWT_TOKEN
+  #     type: string
+  # workspaces:
+  #   - name: source
+  #   - name: acs-token
   results:
     - description: The common vulnerabilities and exposures (CVE) result
       name: SCAN_OUTPUT

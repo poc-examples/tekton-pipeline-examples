@@ -2,12 +2,11 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: git-clone-private
+  name: generic-build-pipeline
   annotations:
-    pipelinesascode.tekton.dev/target-namespace: "pipeline-test"
+    pipelinesascode.tekton.dev/target-namespace: "tekton-test"
     pipelinesascode.tekton.dev/on-target-branch: "[refs/heads/main]"
     pipelinesascode.tekton.dev/on-event: "[push]"
-    pipelinesascode.tekton.dev/task: "[git-clone]"
 spec:
   workspaces:
     - name: source
@@ -18,6 +17,9 @@ spec:
           resources:
             requests:
               storage: 1Gi
+    - name: acs-token
+      secret:
+        secretName: acs-token
     - name: basic-auth
       secret:
         secretName: "{{ git_auth_secret }}"
@@ -26,6 +28,12 @@ spec:
       value: "{{repo_url}}"
     - name: revision
       value: "{{revision}}"
+    - name: jwt_token
+      value: "{{ body.jwt_token }}"
+    - name: image_tag 
+      value: "{{ image_tag }}"
+    - name: image_base
+      value: "quay-quay-quay-registry.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang"
   pipelineSpec:
     workspaces:
       - name: source
@@ -34,16 +42,92 @@ spec:
       - name: repo_url
       - name: revision
     tasks:
-      - name: git-clone-from-catalog
+
+      - name: auth 
+        params:
+          - name: jwt_token
+            value: "$(params.jwt_token)"
         taskRef:
+          kind: Task 
+          name: validate-jwt
+
+      - name: git-clone
+        runAfter:
+          - auth
+        taskRef:
+          kind: Task
           name: git-clone
         params:
           - name: url
             value: $(params.repo_url)
           - name: revision
             value: $(params.revision)
+          - name: sslVerify
+            value: 'false'
+          - name: noProxy
+            value: 'true'
         workspaces:
           - name: output
             workspace: source
           - name: basic-auth
             workspace: basic-auth
+
+      - name: compile
+        runAfter:
+          - git-clone
+        taskRef:
+          kind: Task
+          name: compile
+        workspaces:
+          - name: source
+            workspace: source
+
+      - name: build
+        params:
+          - name: IMAGE
+            value: '$(params.image_base):$(params.image_tag)'
+          - name: STORAGE_DRIVER
+            value: vfs
+          - name: DOCKERFILE
+            value: ./Dockerfile
+          - name: CONTEXT
+            value: .
+          - name: BUILD_EXTRA_ARGS
+            value: "--layers=true"
+          - name: TLSVERIFY
+            value: 'true'
+          - name: FORMAT
+            value: oci
+        runAfter:
+          - compile
+        taskRef:
+          kind: Task
+          name: buildah
+        workspaces:
+          - name: source
+            workspace: source
+
+      - name: scan
+        params:
+          - name: rox_central_endpoint
+            value: central-rhacs-operator.apps.quay-demo-2.ot31.p1.openshiftapps.com:443 # CHANGE TO ROUTE TO MATCH CLIENT
+          - name: image # REQUIRED
+            value: "$(params.image_base):$(params.image_tag)"
+          - name: output_format
+            value: json # OPTIONAL
+          - name: insecure-skip-tls-verify
+            value: "true" # OPTIONAL
+          - name: rox_token_file 
+            value: "/rox-api-token-auth/rox_api_token"
+          - name: output_file
+            value: "/source/scan-output.json"
+        runAfter:
+          - build
+        taskRef:
+          kind: Task
+          name: rhacs-image-scan
+        workspaces:
+          - name: rox-api-token-auth
+            workspace: acs-token
+          - name: source
+            workspace: source
