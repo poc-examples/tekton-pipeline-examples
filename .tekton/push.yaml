@@ -8,7 +8,7 @@ metadata:
     pipelinesascode.tekton.dev/on-target-branch: "[refs/heads/main]"
     pipelinesascode.tekton.dev/on-event: "[push]"
 spec:
-  serviceAccountName: openshift-pipelines
+  # serviceAccountName: openshpipeline
   workspaces:
     - name: source
       volumeClaimTemplate:
