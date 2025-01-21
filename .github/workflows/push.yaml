@@ -34,9 +34,13 @@ jobs:
           TEKTON_API_URL: ${{ secrets.TEKTON_API_URL }}
           JWT_TOKEN: ${{ steps.get-jwt.outputs.jwt_token }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          EVENT: '${{ toJson(github.event) }}'
         run: |
+          echo "$EVENT" > event-payload.json
+          PAYLOAD=$(jq --arg jwt "$JWT_TOKEN" '. + {jwt_token: $jwt}' event-payload.json)
+
           curl -s -X POST ${WEBHOOK_URL} \
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: push" \
-            -d '${{ toJSON(github.event) }}'
-  
+            -d "$PAYLOAD"
+ 
