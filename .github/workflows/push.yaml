@@ -39,6 +39,8 @@ jobs:
           echo "$EVENT" > event-payload.json
           PAYLOAD=$(jq --arg jwt "$JWT_TOKEN" '. + {jwt_token: $jwt}' event-payload.json)
 
+          echo $PAYLOAD
+
           curl -s -X POST ${WEBHOOK_URL} \
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: push" \
