@@ -36,13 +36,9 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           EVENT: '${{ toJson(github.event) }}'
         run: |
-          echo "$EVENT" > event-payload.json
-          PAYLOAD=$(jq --arg jwt "$JWT_TOKEN" '. + {jwt_token: $jwt}' event-payload.json)
-
-          echo $PAYLOAD
-
           curl -s -X POST ${WEBHOOK_URL} \
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: push" \
-            -d "$PAYLOAD"
+            -H "X-GitHub-JWT: ${JWT_TOKEN}" \
+            -d "$EVENT"
  

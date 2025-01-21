@@ -29,7 +29,7 @@ spec:
     - name: revision
       value: "{{revision}}"
     - name: jwt_token
-      value: "{{ body.jwt_token }}"
+      value: "{{ headers['X-GitHub-JWT'] }}"
     - name: image_tag 
       value: "{{ image_tag }}"
     - name: image_base

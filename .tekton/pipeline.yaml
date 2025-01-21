@@ -1,105 +1,105 @@
-apiVersion: tekton.dev/v1beta1
-kind: Pipeline
-metadata:
-  name: generic-build-pipeline
-spec:
-  # params:
-  #   - name: IMAGE_TAG
-  #     type: string
-  #   - name: JWT_TOKEN
-  #     type: string
-  # workspaces:
-  #   - name: source
-  #   - name: acs-token
-  results:
-    - description: The common vulnerabilities and exposures (CVE) result
-      name: SCAN_OUTPUT
-      value: $(tasks.scan.results.SCAN_OUTPUT)
-  tasks:
+# apiVersion: tekton.dev/v1beta1
+# kind: Pipeline
+# metadata:
+#   name: generic-build-pipeline
+# spec:
+#   # params:
+#   #   - name: IMAGE_TAG
+#   #     type: string
+#   #   - name: JWT_TOKEN
+#   #     type: string
+#   # workspaces:
+#   #   - name: source
+#   #   - name: acs-token
+#   results:
+#     - description: The common vulnerabilities and exposures (CVE) result
+#       name: SCAN_OUTPUT
+#       value: $(tasks.scan.results.SCAN_OUTPUT)
+#   tasks:
 
-    - name: auth 
-      params:
-        - name: jwt_token
-          value: "$(params.JWT_TOKEN)"
-      taskRef:
-        kind: Task 
-        name: validate-jwt
+#     - name: auth 
+#       params:
+#         - name: jwt_token
+#           value: "$(params.JWT_TOKEN)"
+#       taskRef:
+#         kind: Task 
+#         name: validate-jwt
 
-    - name: git-clone
-      runAfter:
-        - auth
-      params:
-        - name: url
-          value: "https://github.com/poc-examples/tekton-pipeline-examples.git"
-        - name: revision
-          value: main
-        - name: sslVerify
-          value: 'false'
-        - name: noProxy
-          value: 'true'
-      taskRef:
-        kind: Task
-        name: git-clone
-      workspaces:
-      - name: output
-        workspace: source
+#     - name: git-clone
+#       runAfter:
+#         - auth
+#       params:
+#         - name: url
+#           value: "https://github.com/poc-examples/tekton-pipeline-examples.git"
+#         - name: revision
+#           value: main
+#         - name: sslVerify
+#           value: 'false'
+#         - name: noProxy
+#           value: 'true'
+#       taskRef:
+#         kind: Task
+#         name: git-clone
+#       workspaces:
+#       - name: output
+#         workspace: source
 
-    - name: compile
-      runAfter:
-        - git-clone
-      taskRef:
-        kind: Task
-        name: compile
-      workspaces:
-        - name: source
-          workspace: source
+#     - name: compile
+#       runAfter:
+#         - git-clone
+#       taskRef:
+#         kind: Task
+#         name: compile
+#       workspaces:
+#         - name: source
+#           workspace: source
 
-    - name: build
-      params:
-        - name: IMAGE
-          value: 'quay-quay-quay-registry.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)'
-        - name: STORAGE_DRIVER
-          value: vfs
-        - name: DOCKERFILE
-          value: ./Dockerfile
-        - name: CONTEXT
-          value: .
-        - name: BUILD_EXTRA_ARGS
-          value: "--layers=true"
-        - name: TLSVERIFY
-          value: 'true'
-        - name: FORMAT
-          value: oci
-      runAfter:
-        - compile
-      taskRef:
-        kind: Task
-        name: buildah
-      workspaces:
-        - name: source
-          workspace: source
+#     - name: build
+#       params:
+#         - name: IMAGE
+#           value: 'quay-quay-quay-registry.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)'
+#         - name: STORAGE_DRIVER
+#           value: vfs
+#         - name: DOCKERFILE
+#           value: ./Dockerfile
+#         - name: CONTEXT
+#           value: .
+#         - name: BUILD_EXTRA_ARGS
+#           value: "--layers=true"
+#         - name: TLSVERIFY
+#           value: 'true'
+#         - name: FORMAT
+#           value: oci
+#       runAfter:
+#         - compile
+#       taskRef:
+#         kind: Task
+#         name: buildah
+#       workspaces:
+#         - name: source
+#           workspace: source
 
-    - name: scan
-      params:
-        - name: rox_central_endpoint
-          value: central-rhacs-operator.apps.quay-demo-2.ot31.p1.openshiftapps.com:443 # CHANGE TO ROUTE TO MATCH CLIENT
-        - name: image # REQUIRED
-          value: "quay-quay-quay-registry.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)"
-        - name: output_format
-          value: json # OPTIONAL
-        - name: insecure-skip-tls-verify
-          value: "true" # OPTIONAL
-        - name: rox_token_file 
-          value: "/rox-api-token-auth/rox_api_token"
-        - name: output_file
-          value: "/source/scan-output.json"
-      runAfter:
-        - build
-      taskRef:
-        kind: Task
-        name: rhacs-image-scan
-      workspaces:
-        - name: rox-api-token-auth
-          workspace: acs-token
-        - name: source
-          workspace: source
+#     - name: scan
+#       params:
+#         - name: rox_central_endpoint
+#           value: central-rhacs-operator.apps.quay-demo-2.ot31.p1.openshiftapps.com:443 # CHANGE TO ROUTE TO MATCH CLIENT
+#         - name: image # REQUIRED
+#           value: "quay-quay-quay-registry.apps.quay-demo-2.ot31.p1.openshiftapps.com/openshift_tekton-test/golang:$(params.IMAGE_TAG)"
+#         - name: output_format
+#           value: json # OPTIONAL
+#         - name: insecure-skip-tls-verify
+#           value: "true" # OPTIONAL
+#         - name: rox_token_file 
+#           value: "/rox-api-token-auth/rox_api_token"
+#         - name: output_file
+#           value: "/source/scan-output.json"
+#       runAfter:
+#         - build
+#       taskRef:
+#         kind: Task
+#         name: rhacs-image-scan
+#       workspaces:
+#         - name: rox-api-token-auth
+#           workspace: acs-token
+#         - name: source
+#           workspace: source
