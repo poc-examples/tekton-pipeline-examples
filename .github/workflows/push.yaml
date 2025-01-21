@@ -42,5 +42,6 @@ jobs:
           curl -s -X POST ${WEBHOOK_URL} \
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: push" \
+            -H "X-GitHub-Delivery: "$JWT_TOKEN" \
             -d "$PAYLOAD"
  
