@@ -26,9 +26,14 @@ jobs:
       #   run: |
 
       - name: Authenticate and set context
-        uses: redhat-actions/oc-login@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          openshift_server_url: "https://api.quay-demo-2.ot31.p1.openshiftapps.com:6443"
-          openshift_token: $GITHUB_TOKEN
+        run: |
+          curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz
+          tar -xvf oc.tar.gz
+          chmod +x oc
+
+
+
+          # openshift_server_url: "https://api.quay-demo-2.ot31.p1.openshiftapps.com:6443"
+          # openshift_token: $GITHUB_TOKEN
