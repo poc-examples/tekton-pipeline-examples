@@ -18,7 +18,7 @@ jobs:
       #   env:
       #     TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   run: |
-      #     curl -X GET -H "Authorization: Bearer $TOKEN" https://api.github.com/repos/${{ github.repository }}
+          curl -X GET -H "Authorization: Bearer $TOKEN" https://api.github.com/repos/${{ github.repository }}
 
       # - name: Retrieve OpenShift Login Token
       #   env:
@@ -29,10 +29,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz
-          tar -xvf oc.tar.gz
-          chmod +x oc
-          ./oc login --token=$GITHUB_TOKEN --server=https://api.quay-demo-2.ot31.p1.openshiftapps.com:6443
+          curl -X GET -H "Authorization: Bearer $TOKEN" https://api.github.com/repos/${{ github.repository }}
+
+          # curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz
+          # tar -xvf oc.tar.gz
+          # chmod +x oc
+          # ./oc login --token=$GITHUB_TOKEN --server=https://api.quay-demo-2.ot31.p1.openshiftapps.com:6443
 
 
           # openshift_server_url: "https://api.quay-demo-2.ot31.p1.openshiftapps.com:6443"
