@@ -29,14 +29,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl -X GET -H "Authorization: Bearer $GITHUB_TOKEN" \
-            https://api.github.com/user
-
-          # curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz
-          # tar -xvf oc.tar.gz
-          # chmod +x oc
-          # ./oc login --token=$GITHUB_TOKEN --server=https://api.quay-demo-2.ot31.p1.openshiftapps.com:6443
-
-
-          # openshift_server_url: "https://api.quay-demo-2.ot31.p1.openshiftapps.com:6443"
-          # openshift_token: $GITHUB_TOKEN
+          curl -X POST \
+            -H "Authorization: Basic $(echo -n 'Ov23ligI7Qs9mfLN9wVu:8d24d40638dcfa1082580f0e6e10ae40c3ca8b77' | base64)" \
+            -H "Accept: application/json" \
+            -d "client_id=Ov23ligI7Qs9mfLN9wVu" \
+            -d "client_secret=8d24d40638dcfa1082580f0e6e10ae40c3ca8b77" \
+            -d "grant_type=urn:ietf:params:oauth:grant-type:device_code" \
+            -d "device_code=$GITHUB_TOKEN" \
+            https://github.com/login/oauth/access_token
