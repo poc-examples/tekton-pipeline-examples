@@ -32,7 +32,7 @@ jobs:
           curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz
           tar -xvf oc.tar.gz
           chmod +x oc
-
+          ./oc version
 
 
           # openshift_server_url: "https://api.quay-demo-2.ot31.p1.openshiftapps.com:6443"
