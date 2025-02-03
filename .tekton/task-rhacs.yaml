@@ -125,20 +125,12 @@ spec:
           value: $(params.output_file)
         - name: ROX_ERROR_FILE
           value: $(params.error_file)
-      securityContext:
-        privileged: true
-        runAsUser: 0
       script: |
         #!/bin/bash
 
-        dnf install -y jq
+        echo "roxctl verion: $(roxctl version)"
 
-        curl -L -f -o roxctl https://mirror.openshift.com/pub/rhacs/assets/4.4.1/bin/Linux/roxctl \
-          && chmod +x roxctl
-
-        echo "roxctl verion: $(./roxctl version)"
-
-        ./roxctl image scan \
+        roxctl image scan \
           --token-file=${ROX_API_TOKEN_FILE} \
           --insecure-skip-tls-verify=${INSECURE} \
           --output=${OUTPUT} \

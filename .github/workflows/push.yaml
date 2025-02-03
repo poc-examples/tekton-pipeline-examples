@@ -11,29 +11,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # - name: Call GitHub API
-      #   env:
-      #     TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-          # curl -X GET -H "Authorization: Bearer $TOKEN" https://api.github.com/repos/${{ github.repository }}
-
-      # - name: Retrieve OpenShift Login Token
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-
-      - name: Authenticate and set context
+      - name: Get Auth JWT
+        id: get-jwt
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AUTH_URL: ${{ secrets.AUTH_URL }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         run: |
-          curl -X POST \
-            -H "Authorization: Basic $(echo -n 'Ov23ligI7Qs9mfLN9wVu:8d24d40638dcfa1082580f0e6e10ae40c3ca8b77' | base64)" \
-            -H "Accept: application/json" \
-            -d "client_id=Ov23ligI7Qs9mfLN9wVu" \
-            -d "client_secret=8d24d40638dcfa1082580f0e6e10ae40c3ca8b77" \
-            -d "grant_type=urn:ietf:params:oauth:grant-type:device_code" \
-            -d "device_code=$GITHUB_TOKEN" \
-            https://github.com/login/oauth/access_token
+          RESPONSE=$(curl -s -X POST ${AUTH_URL} \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials")
+
+          TOKEN=$(echo "${RESPONSE}" | jq -r '.access_token')
+          echo "::set-output name=jwt_token::${TOKEN}"
+
+      - name: Trigger the Payload
+        id: payload
+        env:
+          TEKTON_API_URL: ${{ secrets.TEKTON_API_URL }}
+          JWT_TOKEN: ${{ steps.get-jwt.outputs.jwt_token }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          EVENT: '${{ toJson(github.event) }}'
+        run: |
+          curl -s -X POST ${WEBHOOK_URL} \
+            -H "Content-Type: application/json" \
+            -H "X-GitHub-Event: push" \
+            -H "JWT-Token: $JWT_TOKEN" \
+            -d "$EVENT"
+ 
