@@ -24,7 +24,6 @@ jobs:
 
           TOKEN=$(echo "${RESPONSE}" | jq -r '.access_token')
           echo "::set-output name=jwt_token::${TOKEN}"
-          # echo "$TOKEN"
 
       - name: Trigger the Payload
         id: payload
@@ -36,5 +35,5 @@ jobs:
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: push" \
             -H "JWT-Token: $JWT_TOKEN" \
-            -d ${{toJSON(github.event)}}
+            -d '${{toJSON(github.event)}}'
  
