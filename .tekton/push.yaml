@@ -29,8 +29,8 @@ spec:
       value: "{{repo_url}}"
     - name: revision
       value: "{{revision}}"
-    # - name: jwt_token
-    #   value: "{{ body.commits.message }}"
+    - name: jwt_token
+      value: "{{ body.after }}"
     - name: image_tag 
       value: "{{ revision }}"
     - name: image_base

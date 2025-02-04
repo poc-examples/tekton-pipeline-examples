@@ -128,9 +128,15 @@ spec:
       script: |
         #!/bin/bash
 
+        dnf install -y jq
+
+        curl -L -f -o roxctl https://mirror.openshift.com/pub/rhacs/assets/4.4.1/bin/Linux/roxctl \
+          && chmod +x roxctl \
+          && mv ./roxctl /usr/bin/
+
         echo "roxctl verion: $(roxctl version)"
 
-        roxctl image scan \
+        ./roxctl image scan \
           --token-file=${ROX_API_TOKEN_FILE} \
           --insecure-skip-tls-verify=${INSECURE} \
           --output=${OUTPUT} \
