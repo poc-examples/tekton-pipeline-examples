@@ -23,8 +23,8 @@ jobs:
             -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials")
 
           TOKEN=$(echo "${RESPONSE}" | jq -r '.access_token')
-          # echo "::set-output name=jwt_token::${TOKEN}"
-          echo "$TOKEN"
+          echo "::set-output name=jwt_token::${TOKEN}"
+          # echo "$TOKEN"
 
       - name: Trigger the Payload
         id: payload
