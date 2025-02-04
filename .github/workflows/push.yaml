@@ -36,5 +36,5 @@ jobs:
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: push" \
             -H "JWT-Token: $JWT_TOKEN" \
-            -d ${{github.event}}
+            -d '${{toJSON(github.event)}}'
  
