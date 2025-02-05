@@ -87,53 +87,53 @@ spec:
           - name: source
             workspace: source
 
-      - name: build
-        params:
-          - name: IMAGE
-            value: '$(params.image_base):$(params.image_tag)'
-          - name: STORAGE_DRIVER
-            value: vfs
-          - name: DOCKERFILE
-            value: ./Dockerfile
-          - name: CONTEXT
-            value: .
-          - name: BUILD_EXTRA_ARGS
-            value: "--layers=true"
-          - name: TLSVERIFY
-            value: 'true'
-          - name: FORMAT
-            value: oci
-        runAfter:
-          - compile
-        taskRef:
-          kind: Task
-          name: buildah
-        workspaces:
-          - name: source
-            workspace: source
+      # - name: build
+      #   params:
+      #     - name: IMAGE
+      #       value: '$(params.image_base):$(params.image_tag)'
+      #     - name: STORAGE_DRIVER
+      #       value: vfs
+      #     - name: DOCKERFILE
+      #       value: ./Dockerfile
+      #     - name: CONTEXT
+      #       value: .
+      #     - name: BUILD_EXTRA_ARGS
+      #       value: "--layers=true"
+      #     - name: TLSVERIFY
+      #       value: 'true'
+      #     - name: FORMAT
+      #       value: oci
+      #   runAfter:
+      #     - compile
+      #   taskRef:
+      #     kind: Task
+      #     name: buildah
+      #   workspaces:
+      #     - name: source
+      #       workspace: source
 
-      - name: scan
-        params:
-          - name: rox_central_endpoint
-            value: central-rhacs-operator.apps.quay-demo-2.ot31.p1.openshiftapps.com:443 # CHANGE TO ROUTE TO MATCH CLIENT
-          - name: image # REQUIRED
-            value: "$(params.image_base):$(params.image_tag)"
-          - name: output_format
-            value: json # OPTIONAL
-          - name: insecure-skip-tls-verify
-            value: "true" # OPTIONAL
-          - name: rox_token_file 
-            value: "/rox-api-token-auth/rox_api_token"
-          - name: output_file
-            value: "/source/scan-output.json"
-        runAfter:
-          - build
-        taskRef:
-          kind: Task
-          name: rhacs-image-scan
-        workspaces:
-          - name: rox-api-token-auth
-            workspace: acs-token
-          - name: source
-            workspace: source
+      # - name: scan
+      #   params:
+      #     - name: rox_central_endpoint
+      #       value: central-rhacs-operator.apps.quay-demo-2.ot31.p1.openshiftapps.com:443 # CHANGE TO ROUTE TO MATCH CLIENT
+      #     - name: image # REQUIRED
+      #       value: "$(params.image_base):$(params.image_tag)"
+      #     - name: output_format
+      #       value: json # OPTIONAL
+      #     - name: insecure-skip-tls-verify
+      #       value: "true" # OPTIONAL
+      #     - name: rox_token_file 
+      #       value: "/rox-api-token-auth/rox_api_token"
+      #     - name: output_file
+      #       value: "/source/scan-output.json"
+      #   runAfter:
+      #     - build
+      #   taskRef:
+      #     kind: Task
+      #     name: rhacs-image-scan
+      #   workspaces:
+      #     - name: rox-api-token-auth
+      #       workspace: acs-token
+      #     - name: source
+      #       workspace: source
  
