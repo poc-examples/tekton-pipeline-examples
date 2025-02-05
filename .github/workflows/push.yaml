@@ -27,7 +27,7 @@ jobs:
 
       - name: debug 
         run: |
-          echo "${{ github }}"
+          echo "${{ toJSON(github) }}"
 
       - name: Trigger the Payload
         id: payload
