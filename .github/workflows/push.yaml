@@ -32,6 +32,7 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
         run: |
           curl -s -X POST ${WEBHOOK_URL} \
+            -H "Authorization: Bearer password" \
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: push" \
             -H "JWT-Token: $JWT_TOKEN" \
