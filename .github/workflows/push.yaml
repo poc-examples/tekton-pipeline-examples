@@ -25,6 +25,10 @@ jobs:
           TOKEN=$(echo "${RESPONSE}" | jq -r '.access_token')
           echo "::set-output name=jwt_token::${TOKEN}"
 
+      - name: debug 
+        run: |
+          echo "${{ github }}"
+
       - name: Trigger the Payload
         id: payload
         env:
