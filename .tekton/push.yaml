@@ -10,7 +10,7 @@ metadata:
     pipelinesascode.tekton.dev/on-cel-expression: |
       target_branch == "{{branch_filter}}"
 spec:
-  # serviceAccountName: openshpipeline3
+  # serviceAccountName: openshpipeline4
   workspaces:
     - name: source
       volumeClaimTemplate:
