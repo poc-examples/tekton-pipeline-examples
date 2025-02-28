@@ -8,7 +8,7 @@ metadata:
     pipelinesascode.tekton.dev/on-target-branch: "[refs/heads/main]"
     pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/on-cel-expression: |
-      branch_filter == "dev"
+      target_branch == "main"
 spec:
   # serviceAccountName: openshpipeline
   workspaces:
