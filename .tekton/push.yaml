@@ -7,6 +7,8 @@ metadata:
     pipelinesascode.tekton.dev/target-namespace: "tekton-test"
     pipelinesascode.tekton.dev/on-target-branch: "[refs/heads/main]"
     pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      branch_filter == "true"
 spec:
   # serviceAccountName: openshpipeline
   workspaces:
